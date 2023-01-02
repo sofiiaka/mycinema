@@ -1,0 +1,17 @@
+{% extends 'main/layout.html' %}
+
+
+{% block title %}Add new film{% endblock %}
+
+
+{% block content %}
+    <div class="features">
+        <h1>Add new film</h1>
+        <form method="post">
+            {% csrf_token %}<br>
+            {{ form.ukrainian_full_name }}<br>
+            <span>{{ error }}</span>
+            <button class="btn btn-success" type="submit">Search film</button>
+        </form>
+    </div>
+{% endblock %}
