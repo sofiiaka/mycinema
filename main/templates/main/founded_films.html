@@ -1,0 +1,21 @@
+{% extends 'main/layout.html' %}
+
+
+{% block title %}Founded films{% endblock %}
+
+
+{% block content %}
+    <div class="features">
+        <h1>Founded films</h1>
+        {% if founded_films %}
+            {% for founded_film in founded_films %}
+                <div class="alert alert-warning">
+                    <h3>{{ founded_film.title }}</h3>
+                    <p>{{ founded_film.movieID }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+        <p>You don`t have any records</p>
+        {% endif %}
+    </div>
+{% endblock %}
