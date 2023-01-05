@@ -11,7 +11,8 @@
             {% for founded_film in founded_films %}
                 <div class="alert alert-warning">
                     <h3>{{ founded_film.title }}</h3>
-                    <p>{{ founded_film.movieID }}</p>
+                    <p>{{ founded_film.id }}</p>
+                    <a href="{% url 'film-detail' founded_film.id %}" class="btn btn-warning">Read more...</a>
                 </div>
             {% endfor %}
         {% else %}
@@ -19,3 +20,4 @@
         {% endif %}
     </div>
 {% endblock %}
+

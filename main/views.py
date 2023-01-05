@@ -2,11 +2,9 @@ from django.shortcuts import render
 from .models import Film
 from .forms import FilmForm
 from django.views.generic import DetailView, UpdateView, DeleteView
-import imdb
-
-
-ia = imdb.Cinemagoer()
-
+import requests
+import json
+from core.settings import API_KEY_TMDB
 
 def home(request):
     return render(request, 'main/home.html')
@@ -20,12 +18,15 @@ def add_film(request):
         form = FilmForm(request.POST)
         if form.is_valid():
             search_film = form.data.get('ukrainian_full_name')
-            founded_films = ia.search_movie(search_film)
-            #print(founded_films)
-            #for founded_film in founded_films:
-            #    print(founded_film.__dict__())
+            founded_films = requests.get(f'https://api.themoviedb.org/3/search/movie?api_key={API_KEY_TMDB}&query={search_film}').text
+            founded_films = json.loads(founded_films)
+
+            #print(type(founded_films))
+
+
             data = {
-                'founded_films': founded_films
+                'founded_films': founded_films["results"]
+
             }
             return render(request, 'main/founded_films.html', data)
         else:
@@ -38,6 +39,11 @@ def add_film(request):
     }
     return render(request, 'main/add_film.html', data)
 
+def film_detail(request, movieID):
+    film_detail = ia.get_movie(movieID)
+    print(type(film_detail))
+    print(film_detail.genres)
+    return render(request, 'main/add_film.html')
 
 
 
