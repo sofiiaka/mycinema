@@ -9,9 +9,11 @@ from core.settings import API_KEY_TMDB
 def home(request):
     return render(request, 'main/home.html')
 
+
 def my_films(request):
     film = Film.objects.order_by('-year_prodaction_id')
     return render(request, 'main/my_films.html', {'film': film})
+
 
 def add_film(request):
     if request.method == 'POST':
@@ -22,7 +24,6 @@ def add_film(request):
             founded_films = json.loads(founded_films)
 
             #print(type(founded_films))
-
 
             data = {
                 'founded_films': founded_films["results"]
@@ -39,11 +40,27 @@ def add_film(request):
     }
     return render(request, 'main/add_film.html', data)
 
-def film_detail(request, movieID):
-    film_detail = ia.get_movie(movieID)
-    print(type(film_detail))
-    print(film_detail.genres)
-    return render(request, 'main/add_film.html')
+def film_details(request, id):
+    film_details = requests.get(f'https://api.themoviedb.org/3/movie/{id}?api_key={API_KEY_TMDB}').text
+    film_details = json.loads(film_details)
+
+    genres = []
+    for genre in film_details.get('genres'):
+        genres.append(genre.get('name'))
+
+    data = {
+        'original_title': film_details.get('original_title'),
+        'overview': film_details.get('overview'),
+        'origin_country': film_details.get('origin_country'),
+        'genres': genres,
+        'runtime': film_details.get('runtime'),
+        'release_date': film_details.get('release_date')
+    }
+
+    return render(request, 'main/film_details.html', data)
+
+
+
 
 
 
