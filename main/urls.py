@@ -3,7 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.home),
-    path('myfilms', views.my_films),
-    path('add_film', views.add_film, name='add_film'),
-    path('film/<id>',  views.film_details, name ='film-detail')
+    path('add-film', views.add_film, name='add_film'),
+    path('film/<id>',  views.film_details, name='film_detail'),
+    path('add-film-to-collection/<id>', views.add_film_to_collection, name='add_film_to_collection'),
+    path('collections-film/', views.collections_film, name='collections_film')
 ]

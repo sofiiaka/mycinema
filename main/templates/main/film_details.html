@@ -10,11 +10,16 @@
         {% if overview %}
             <p>Overview: {{ overview }}</p>
         {% endif %}
-        <p>{{ origin_country }}</p>
+        {% for production_country in production_countries %}
+        <p>id: {{ id }}</p>
+        <p>Сountry short name: {{ production_country.iso_3166_1 }}</p>
+        <p>Сountry full name: {{ production_country.name }}</p>
+        {% endfor %}
         {% for genre in genres %}
-            <p>{{ genre }}</p>
+            <p>Genre: {{ genre }}</p>
         {% endfor %}
         <p>Runtime: {{ runtime }}</p>
         <p>Release date: {{ release_date }}</p>
+        <a href="{% url 'add_film_to_collection' id %}"><button class="btn btn-success" type="submit">Add this film to my collection</button></a>
     </div>
 {% endblock %}

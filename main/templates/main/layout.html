@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,10 +13,10 @@
 </head>
 <body>
     <aside>
-        <h3>Навигация</h3>
+        <h3>Navigation</h3>
         <ul>
-            <a href=""><li><i class="bi bi-house"></i>Главная</li></a>
-            <a href=""><li><i class="bi bi-info"></i>Про нас</li></a>
+            <a href=""><li><i class="bi bi-house"></i>Main</li></a>
+            <a href="{% url 'collections_film' %}"><li><i class="bi bi-info"></i>My films collection</li></a>
             <a href="{% url 'add_film' %}"><li><button class="btn btn-info"><i class="fas fa-plus"></i>Add new film</button></li></a>
         </ul>
     </aside>

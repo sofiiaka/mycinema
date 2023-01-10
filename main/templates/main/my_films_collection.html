@@ -1,0 +1,22 @@
+{% extends 'main/layout.html' %}
+
+
+{% block title %}My films collection{% endblock %}
+
+
+{% block content %}
+    <div class="features">
+        <h1>My films collection</h1>
+        {% if films %}
+            {% for film in films %}
+                <div class="alert alert-warning">
+                    <h3>{{ film.title }}</h3>
+                    <p>{{ film.id }}</p>
+                    <p>{{ film.overview }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+        <p>You don`t have any records</p>
+        {% endif %}
+    </div>
+{% endblock %}
