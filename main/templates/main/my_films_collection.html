@@ -13,6 +13,7 @@
                     <h3>{{ film.title }}</h3>
                     <p>{{ film.id }}</p>
                     <p>{{ film.overview }}</p>
+                    <a href="{% url 'film_details_in_collection' film.id %}" class="btn btn-warning">Read more...</a>
                 </div>
             {% endfor %}
         {% else %}

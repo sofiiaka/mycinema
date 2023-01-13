@@ -108,3 +108,19 @@ def collections_film(request):
 
 def film_already_exist(request):
     return render(request, 'main/film_already_exist_error.html')
+
+def film_details_in_collection(request, id):
+    film_details = Film.objects.get(id=id)
+
+    data = {
+        'title': film_details.title,
+        'id': film_details.id,
+        'overview': film_details.overview,
+        'duration': film_details.duration,
+        'year_production': film_details.year_production,
+        'genre': film_details.genre_id.genre,
+        'country_full_name': film_details.country_id.country_full_name,
+        'country_short_name': film_details.country_id.country_short_name
+    }
+    print(data)
+    return render(request, 'main/my_films_collection_details.html', data)

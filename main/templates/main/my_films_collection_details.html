@@ -1,0 +1,20 @@
+{% extends 'main/layout.html' %}
+
+
+{% block title %}Film details{% endblock %}
+
+
+{% block content %}
+    <div class="features">
+        <h1>Title: {{ title }}</h1>
+        {% if overview %}
+            <p>Overview: {{ overview }}</p>
+        {% endif %}
+        <p>id: {{ id }}</p>
+        <p>Сountry short name: {{ country_short_name }}</p>
+        <p>Сountry full name: {{ country_full_name }}</p>
+        <p>Genre: {{ genre }}</p>
+        <p>Runtime: {{ duration }}</p>
+        <p>Release date: {{ year_production }}</p>
+    </div>
+{% endblock %}
