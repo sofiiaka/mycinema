@@ -12,3 +12,16 @@ class FilmForm(ModelForm):
                 "placeholder": "Title"
             })
         }
+
+
+class FilmRemarksForm(ModelForm):
+    class Meta:
+        model = Film
+        fields = ['remark']
+
+        widgets = {
+            "Remark": TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Remark"
+            })
+        }

@@ -16,5 +16,14 @@
         <p>Genre: {{ genre }}</p>
         <p>Runtime: {{ duration }}</p>
         <p>Release date: {{ year_production }}</p>
+        {% if remark %}
+        <p>Remark: {{ remark }}</p>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}<br>
+            {{ form.remark }}<br>
+            <span>{{ error }}</span>
+            <button class="btn btn-success" type="submit">Add remark</button>
+        </form>
     </div>
 {% endblock %}

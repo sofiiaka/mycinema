@@ -16,4 +16,5 @@ class Film(models.Model):
     overview = models.CharField('Overview', max_length=2500)
     duration = models.CharField('Duration', max_length=4)
     genre_id = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    country_id = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country_id = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
+    remark = models.TextField('Remark', null=True)

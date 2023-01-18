@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Film, Country, Genre
-from .forms import FilmForm
+from .forms import FilmForm, FilmRemarksForm
 from django.views.generic import DetailView, UpdateView, DeleteView
 import requests
 import json
 from core.settings import API_KEY_TMDB
+
 
 def home(request):
     return render(request, 'main/home.html')
@@ -61,18 +62,21 @@ def add_film_to_collection(request, id):
     if film_already_exist:
         return redirect('/film-already-exist-error/')
     else:
-        for production_country in film_details.get('production_countries'):
-            if production_country.get('iso_3166_1') and production_country.get('name'):
-                try:
-                    country = Country.objects.get(country_short_name=film_details.get('iso_3166_1'), country_full_name=film_details.get('name'))
-                    production_country_id = country.id
-                except Exception:
-                    country = Country(
-                        country_short_name=production_country.get('iso_3166_1'),
-                        country_full_name=production_country.get('name')
-                    )
-                    country.save()
-                    production_country_id = country.id
+        if film_details.get('production_countries'):
+            for production_country in film_details.get('production_countries'):
+                if production_country.get('iso_3166_1') and production_country.get('name'):
+                    try:
+                        country = Country.objects.get(country_short_name=film_details.get('iso_3166_1'), country_full_name=film_details.get('name'))
+                        production_country_id = country.id
+                    except Exception:
+                        country = Country(
+                            country_short_name=production_country.get('iso_3166_1'),
+                            country_full_name=production_country.get('name')
+                        )
+                        country.save()
+                        production_country_id = country.id
+        else:
+            country = None
         for genres in film_details.get('genres'):
             if genres.get('id') and genres.get('name'):
                 try:
@@ -110,8 +114,8 @@ def film_already_exist(request):
     return render(request, 'main/film_already_exist_error.html')
 
 def film_details_in_collection(request, id):
+    form = FilmRemarksForm()
     film_details = Film.objects.get(id=id)
-
     data = {
         'title': film_details.title,
         'id': film_details.id,
@@ -120,7 +124,17 @@ def film_details_in_collection(request, id):
         'year_production': film_details.year_production,
         'genre': film_details.genre_id.genre,
         'country_full_name': film_details.country_id.country_full_name,
-        'country_short_name': film_details.country_id.country_short_name
+        'country_short_name': film_details.country_id.country_short_name,
+        'remark': film_details.remark,
+        'form': form,
+
     }
-    print(data)
+    if request.method == 'POST':
+        form = FilmRemarksForm(request.POST)
+        if form.is_valid():
+            film_details.remark = form.data.get('remark')
+            film_details.save()
+            data['remark'] = form.data.get('remark')
+        else:
+            data['error'] ='Form is invalid'
     return render(request, 'main/my_films_collection_details.html', data)
