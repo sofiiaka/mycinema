@@ -1,0 +1,15 @@
+{% extends 'main/layout.html' %}
+
+
+{% block title %}Delete film{% endblock %}
+
+
+{% block content %}
+    <div class="features">
+        <h1>Delete film</h1>
+        <form method="post">
+            {% csrf_token %}<br>
+            <button class="btn btn-seccess" type="submit">Delete this film</button>
+        </form>
+    </div>
+{% endblock %}

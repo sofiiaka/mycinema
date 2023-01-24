@@ -5,10 +5,20 @@ from django.views.generic import DetailView, UpdateView, DeleteView
 import requests
 import json
 from core.settings import API_KEY_TMDB
+from django.urls import reverse_lazy
 
 
 def home(request):
-    return render(request, 'main/home.html')
+    founded_films = requests.get(
+        f'https://api.themoviedb.org/3/movie/popular?api_key={API_KEY_TMDB}').text
+    founded_films = json.loads(founded_films)
+
+
+    data = {
+        'founded_films': founded_films["results"]
+
+    }
+    return render(request, 'main/home.html', data)
 
 
 def add_film(request):
@@ -138,3 +148,9 @@ def film_details_in_collection(request, id):
         else:
             data['error'] ='Form is invalid'
     return render(request, 'main/my_films_collection_details.html', data)
+
+
+class FilmDeleteView(DeleteView):
+    model = Film
+    success_url = '/collections-film/'
+    template_name = 'main/film_confirm_delete.html'

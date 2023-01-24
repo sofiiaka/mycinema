@@ -24,6 +24,7 @@
             {{ form.remark }}<br>
             <span>{{ error }}</span>
             <button class="btn btn-success" type="submit">Add remark</button>
+            <a href="{% url 'film-delete' id %}" class="btn btn-danger">Delete this film</a>
         </form>
     </div>
 {% endblock %}

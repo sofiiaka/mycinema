@@ -6,7 +6,14 @@
 
 {% block content %}
     <div class="features">
-        <h1>{{ title }}</h1>
-        <p>Home page</p>
+        <h1>Founded films</h1>
+        {% for founded_film in founded_films %}
+            <div class="alert alert-warning">
+                <h3>{{ founded_film.original_title }}</h3>
+                <p>{{ founded_film.overview }}</p>
+                <p>{{ founded_film.id }}</p>
+                <a href="{% url 'film_detail' founded_film.id %}" class="btn btn-warning">Read more...</a>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

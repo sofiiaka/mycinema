@@ -8,5 +8,6 @@ urlpatterns = [
     path('add-film-to-collection/<id>', views.add_film_to_collection, name='add_film_to_collection'),
     path('collections-film/', views.collections_film, name='collections_film'),
     path('film-already-exist-error/', views.film_already_exist, name='film_already_exist_error'),
-    path('film-details-in-collection/<id>',views.film_details_in_collection, name='film_details_in_collection' )
+    path('film-details-in-collection/<id>',views.film_details_in_collection, name='film_details_in_collection' ),
+    path('<int:pk>/delete', views.FilmDeleteView.as_view(), name='film-delete' )
 ]
