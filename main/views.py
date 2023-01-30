@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Film, Country, Genre
-from .forms import FilmForm, FilmRemarksForm
+from .forms import FilmForm, FilmRemarksForm, FilmOwnRatingForm
 from django.views.generic import DetailView, UpdateView, DeleteView
 import requests
 import json
@@ -29,11 +29,24 @@ def add_film(request):
             founded_films = requests.get(f'https://api.themoviedb.org/3/search/movie?api_key={API_KEY_TMDB}&query={search_film}').text
             founded_films = json.loads(founded_films)
 
-            data = {
-                'founded_films': founded_films["results"]
+            data = []
 
-            }
-            return render(request, 'main/founded_films.html', data)
+            for founded_film in founded_films.get('results'):
+                if Film.objects.filter(title=founded_film.get('title')).exists():
+                    data.append({
+                        'title': founded_film.get('title'),
+                        'id': founded_film.get('id'),
+                        'exists': True
+                    })
+                else:
+                    data.append({
+                        'title': founded_film.get('title'),
+                        'id': founded_film.get('id'),
+                        'exists': False
+                    })
+
+                results = {'data': data}
+            return render(request, 'main/founded_films.html', results)
         else:
             error = 'The form was incorrect!'
 
@@ -47,6 +60,7 @@ def add_film(request):
 def film_details(request, id):
     film_details = requests.get(f'https://api.themoviedb.org/3/movie/{id}?api_key={API_KEY_TMDB}').text
     film_details = json.loads(film_details)
+    film_images = requests.get(f'https://api.themoviedb.org/3/movie/{id}/images?api_key={API_KEY_TMDB}').text
 
     genres = []
     for genre in film_details.get('genres'):
@@ -124,7 +138,8 @@ def film_already_exist(request):
     return render(request, 'main/film_already_exist_error.html')
 
 def film_details_in_collection(request, id):
-    form = FilmRemarksForm()
+    form_remark = FilmRemarksForm()
+    form_own_rating = FilmOwnRatingForm()
     film_details = Film.objects.get(id=id)
     data = {
         'title': film_details.title,
@@ -136,15 +151,24 @@ def film_details_in_collection(request, id):
         'country_full_name': film_details.country_id.country_full_name,
         'country_short_name': film_details.country_id.country_short_name,
         'remark': film_details.remark,
-        'form': form,
+        'own_rating': film_details.own_rating,
+        'form_remark': form_remark,
+        'form_own_rating': form_own_rating
 
     }
     if request.method == 'POST':
-        form = FilmRemarksForm(request.POST)
-        if form.is_valid():
-            film_details.remark = form.data.get('remark')
+        form_remark = FilmRemarksForm(request.POST)
+        form_own_rating = FilmOwnRatingForm(request.POST)
+        if form_remark.is_valid():
+            film_details.remark = form_remark.data.get('remark')
             film_details.save()
-            data['remark'] = form.data.get('remark')
+            data['remark'] = form_remark.data.get('remark')
+        else:
+            data['error'] ='Form is invalid'
+        if form_own_rating.is_valid():
+            film_details.own_rating = form_own_rating.data.get('own_rating')
+            film_details.save()
+            data['own_rating'] = form_own_rating.data.get('own_rating')
         else:
             data['error'] ='Form is invalid'
     return render(request, 'main/my_films_collection_details.html', data)

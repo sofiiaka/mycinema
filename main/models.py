@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Country(models.Model):
     country_full_name = models.CharField('Country full name', max_length=100)
@@ -18,3 +19,4 @@ class Film(models.Model):
     genre_id = models.ForeignKey(Genre, on_delete=models.CASCADE)
     country_id = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
     remark = models.TextField('Remark', null=True)
+    own_rating = models.IntegerField('Own rating', validators=[MaxValueValidator(10), MinValueValidator(1)], null=True)

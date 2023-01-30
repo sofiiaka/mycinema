@@ -1,17 +1,16 @@
 {% extends 'main/layout.html' %}
 
-
 {% block title %}Founded films{% endblock %}
-
 
 {% block content %}
     <div class="features">
         <h1>Founded films</h1>
-        {% if founded_films %}
-            {% for founded_film in founded_films %}
+        {% if data %}
+            {% for founded_film in data %}
                 <div class="alert alert-warning">
                     <h3>{{ founded_film.title }}</h3>
                     <p>{{ founded_film.id }}</p>
+                    <p>{{ founded_film.exists }}</p>
                     <a href="{% url 'film_detail' founded_film.id %}" class="btn btn-warning">Read more...</a>
                 </div>
             {% endfor %}
@@ -20,4 +19,3 @@
         {% endif %}
     </div>
 {% endblock %}
-

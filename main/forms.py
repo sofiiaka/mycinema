@@ -25,3 +25,16 @@ class FilmRemarksForm(ModelForm):
                 "placeholder": "Remark"
             })
         }
+
+
+class FilmOwnRatingForm(ModelForm):
+    class Meta:
+        model = Film
+        fields = ['own_rating']
+
+        widgets = {
+            "Own rating": TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "Own rating"
+            })
+        }

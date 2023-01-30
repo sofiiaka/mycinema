@@ -19,12 +19,21 @@
         {% if remark %}
         <p>Remark: {{ remark }}</p>
         {% endif %}
+        {% if own_rating %}
+        <p>Own rating: {{ own_rating }}</p>
+        {% endif %}
         <form method="post">
             {% csrf_token %}<br>
-            {{ form.remark }}<br>
+            {{ form_remark.remark }}<br>
             <span>{{ error }}</span>
-            <button class="btn btn-success" type="submit">Add remark</button>
-            <a href="{% url 'film-delete' id %}" class="btn btn-danger">Delete this film</a>
+            <p><button class="btn btn-success" type="submit">Add remark</button></p>
         </form>
+        <form method="post">
+            {% csrf_token %}<br>
+            {{ form_own_rating.own_rating }}<br>
+            <span>{{ error }}</span>
+            <p><button class="btn btn-success" type="submit">Add own rating</button></p>
+        </form>
+        <p><a href="{% url 'film-delete' id %}" class="btn btn-danger">Delete this film</a></p>
     </div>
 {% endblock %}
